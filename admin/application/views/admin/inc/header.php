@@ -270,7 +270,7 @@
                                     Entry <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
-                                    <a href="<?php echo base_url();?>home/payment_analysis" class="dropdown-item">State
+                                    <a href="<?php echo base_url();?>home/state_with_gov" class="dropdown-item">State
                                         With Goverment</a>
                                     <a href="<?php echo base_url();?>home/business_size" class="dropdown-item">Size
                                         of Business</a>

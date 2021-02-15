@@ -469,4 +469,28 @@ class Home_model extends CI_Model
     {
         $this->db->where('id', $retid)->update('sizeofbusiness',$formArray);
     }
+
+    public function insstate_with_gov($data)
+    {
+        $this->db->insert('statewithgovernment', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function state_with_gov_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('statewithgovernment')->result_array();
+        return $data;
+    }
+
+    public function specific_state_with_gov($id)
+    {
+        $data = $this->db->where('id',$id)->get('statewithgovernment')->row_array();
+        return $data;
+    }
+
+    public function update_state_with_gov($retid,$formArray)
+    {
+        $this->db->where('id', $retid)->update('statewithgovernment',$formArray);
+    }
 }

@@ -1168,4 +1168,87 @@ class Home extends CI_Controller
 			redirect(base_url() . 'home');
 		}
 	}
+
+	public function state_with_gov()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'State With Goverment List';
+			$data['rev'] = $this->home_model->state_with_gov_list_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/state_with_gov_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_state_with_gov()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			if (!empty($id)) {
+				$data['title'] =  'Edit State With Goverment';
+				$data['rev'] = $this->home_model->specific_state_with_gov($id);
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_state_with_gov', $data);
+				$this->load->view('admin/inc/footer');
+			} else {
+				$data['title'] =  'Add State With Goverment';
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_state_with_gov', $data);
+				$this->load->view('admin/inc/footer');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function store_State_With_Goverment()
+	{
+		if ($this->session->userdata('username') != '') {
+			// echo '<pre>';print_r($_POST);die();
+			if (!empty($_POST['State_With_Goverment_id'])) {
+				$data['title'] =  'Update State With Goverment';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['state'] = $_POST['state'];
+				$formArray['government'] = $_POST['government'];
+				$this->home_model->update_state_with_gov($_POST['State_With_Goverment_id'], $formArray);
+				$this->session->set_flashdata('success', 'State With Goverment Updated Successfully.');
+				redirect(base_url() . 'home/state_with_gov');
+			} else {
+				$data['title'] =  'Store State With Goverment';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['state'] = $_POST['state'];
+				$formArray['government'] = $_POST['government'];
+				$this->home_model->insstate_with_gov($formArray);
+				$this->session->set_flashdata('success', 'State With Goverment Added Successfully.');
+				redirect(base_url() . 'home/state_with_gov');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function delete_state_with_gov()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment(3);
+			$delete = $this->db->where('id', $id)->delete('statewithgovernment');
+			if ($delete) {
+				$this->session->set_flashdata('success', 'State With Goverment Deleted Successfully.');
+				redirect(base_url() . 'home/state_with_gov');
+			} else {
+				$this->session->set_flashdata('failure', 'State With Goverment Already Deleted.');
+				redirect(base_url() . 'home/state_with_gov');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
 }
