@@ -108,8 +108,6 @@
                     <?php
                         }
                     ?>
-
-
                     <!-- file preview template -->
                     <div class="d-none" id="uploadPreviewTemplate">
                         <div class="card mt-1 mb-0 shadow-none border">
