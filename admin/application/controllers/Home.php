@@ -1115,7 +1115,7 @@ class Home extends CI_Controller
 			} else {
 				$data['title'] =  'Add Size Of Business';
 				$this->load->view('admin/inc/header', $data);
-				$this->load->view('admin/add_bus_type', $data);
+				$this->load->view('admin/add_bus_size', $data);
 				$this->load->view('admin/inc/footer');
 			}
 		} else {
@@ -1128,22 +1128,22 @@ class Home extends CI_Controller
 	{
 		if ($this->session->userdata('username') != '') {
 			// echo '<pre>';print_r($_POST);die();
-			if (!empty($_POST['bus_type_id'])) {
+			if (!empty($_POST['bus_size_id'])) {
 				$data['title'] =  'Update Type Of Business';
 				$formArray = array();
 				$formArray['admin_id'] = $this->session->userdata('id');
-				$formArray['typeofbusiness'] = $_POST['bus_type'];
-				$this->home_model->update_bus_type($_POST['bus_type_id'], $formArray);
-				$this->session->set_flashdata('success', 'Business Type Updated Successfully.');
-				redirect(base_url() . 'home/business_type');
+				$formArray['sizeofbusiness'] = $_POST['bus_size'];
+				$this->home_model->update_bus_size($_POST['bus_size_id'], $formArray);
+				$this->session->set_flashdata('success', 'Business Size Updated Successfully.');
+				redirect(base_url() . 'home/business_size');
 			} else {
 				$data['title'] =  'Store Type Of Business';
 				$formArray = array();
 				$formArray['admin_id'] = $this->session->userdata('id');
-				$formArray['typeofbusiness'] = $_POST['bus_type'];
-				$this->home_model->insbustype($formArray);
-				$this->session->set_flashdata('success', 'Business Type Added Successfully.');
-				redirect(base_url() . 'home/business_type');
+				$formArray['sizeofbusiness'] = $_POST['bus_size'];
+				$this->home_model->insbussize($formArray);
+				$this->session->set_flashdata('success', 'Business Size Added Successfully.');
+				redirect(base_url() . 'home/business_size');
 			}
 		} else {
 			$this->session->set_flashdata('failure', 'Invalid Username and Password');

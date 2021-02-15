@@ -36,7 +36,7 @@
                                             }
                                             ?>
                                         </h4>
-                                        <a href="<?php  echo base_url();?>home/add_business_type"><button type="button"
+                                        <a href="<?php  echo base_url();?>home/add_business_size"><button type="button"
                                                 class="btn btn-primary btn-sm waves-effect waves-light"
                                                 style="float: right;"><i class="fe-plus mr-1"></i> ADD</button></a>
                                         <table id="datatable-buttons"

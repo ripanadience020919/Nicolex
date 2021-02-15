@@ -16,10 +16,10 @@
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Master Entry</a></li>
-                                        <li class="breadcrumb-item active">Edit Type Of Business</li>
+                                        <li class="breadcrumb-item active">Edit Size Of Business</li>
                                     </ol>
                                 </div>
-                                <h4 class="page-title">Edit Type Of Business</h4>
+                                <h4 class="page-title">Edit Size Of Business</h4>
                             </div>
                             <?php
                                 } else {
@@ -29,10 +29,10 @@
                                     <ol class="breadcrumb m-0">
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
                                         <li class="breadcrumb-item"><a href="javascript: void(0);">Master Entry</a></li>
-                                        <li class="breadcrumb-item active">Add Type Of Business</li>
+                                        <li class="breadcrumb-item active">Add Size Of Business</li>
                                     </ol>
                                 </div>
-                                <h4 class="page-title">Add Type Of Business</h4>
+                                <h4 class="page-title">Add Size Of Business</h4>
                             </div>
                             <?php
                                 } 
@@ -52,13 +52,13 @@
                                     <div class="form-group mb-3">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label for="product-name">Type Of Business<span
+                                                <label for="product-name">Size Of Business<span
                                                         class="text-danger">*</span></label>
-                                                <input type="hidden" name="bus_type_id"
+                                                <input type="hidden" name="bus_size_id"
                                                     value="<?php if(!empty($rev['id'])){echo $rev['id'];} ?>">
-                                                <input type="text" id="bus_type" name="bus_type" class="form-control"
+                                                <input type="text" id="bus_size" name="bus_size" class="form-control"
                                                     placeholder="Enter Business Size"
-                                                    value="<?php if(!empty($rev['sizeofbusiness'])){echo $rev['typeofbusiness'];} ?>"
+                                                    value="<?php if(!empty($rev['sizeofbusiness'])){echo $rev['sizeofbusiness'];} ?>"
                                                     required>
                                             </div>
                                         </div>
@@ -86,9 +86,9 @@
                                     <div class="form-group mb-3">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label for="product-name">Type Of Business<span
+                                                <label for="product-name">Size Of Business<span
                                                         class="text-danger">*</span></label>
-                                                <input type="text" id="bus_type" name="bus_type" class="form-control"
+                                                <input type="text" id="bus_size" name="bus_size" class="form-control"
                                                     placeholder="Enter Business Size" required>
                                             </div>
                                         </div>
