@@ -272,7 +272,7 @@
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url();?>home/payment_analysis" class="dropdown-item">State
                                         With Goverment</a>
-                                    <a href="<?php echo base_url();?>home/payment_analysis" class="dropdown-item">Size
+                                    <a href="<?php echo base_url();?>home/business_size" class="dropdown-item">Size
                                         of Business</a>
                                     <a href="<?php echo base_url();?>home/business_type" class="dropdown-item">Business
                                         Type</a>

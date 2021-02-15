@@ -9,10 +9,10 @@
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Home</a></li>
                                             <li class="breadcrumb-item"><a href="javascript: void(0);">Master Entry</a>
                                             </li>
-                                            <li class="breadcrumb-item active">Type Of Business List</li>
+                                            <li class="breadcrumb-item active">Size Of Business List</li>
                                         </ol>
                                     </div>
-                                    <h4 class="page-title">Type Of Business List</h4>
+                                    <h4 class="page-title">Size Of Business List</h4>
                                 </div>
                             </div>
                         </div>
@@ -44,7 +44,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Sl No.</th>
-                                                    <th>Type Of Business</th>
+                                                    <th>Size Of Business</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -56,18 +56,18 @@
                                                 <tr>
                                                     <td><?php echo $key + 1; ?></td>
                                                     <td>
-                                                        <?php echo $val['typeofbusiness']; ?>
+                                                        <?php echo $val['sizeofbusiness']; ?>
                                                     </td>
                                                     <td>
                                                         <a
-                                                            href="<?= base_url() . 'home/add_business_type/' . $val['id']; ?>"><button
+                                                            href="<?= base_url() . 'home/add_business_size/' . $val['id']; ?>"><button
                                                                 type="button"
                                                                 class="btn btn-warning btn-sm waves-effect waves-light"><i
                                                                     class="mdi mdi-square-edit-outline"></i>
                                                                 Edit</button></a>
 
                                                         <a
-                                                            href="<?= base_url() . 'home/delete_business_type/' . $val['id']; ?>"><button
+                                                            href="<?= base_url() . 'home/delete_business_size/' . $val['id']; ?>"><button
                                                                 type="button"
                                                                 class="btn btn-danger btn-sm waves-effect waves-light"><i
                                                                     class="mdi mdi-delete"></i> Delete</button></a>

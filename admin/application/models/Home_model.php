@@ -445,4 +445,28 @@ class Home_model extends CI_Model
     {
         $this->db->where('id', $retid)->update('typeofbusiness',$formArray);
     }
+
+    public function insbussize($data)
+    {
+        $this->db->insert('sizeofbusiness', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function bus_size_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('sizeofbusiness')->result_array();
+        return $data;
+    }
+
+    public function specific_bus_size($id)
+    {
+        $data = $this->db->where('id',$id)->get('sizeofbusiness')->row_array();
+        return $data;
+    }
+
+    public function update_bus_size($retid,$formArray)
+    {
+        $this->db->where('id', $retid)->update('sizeofbusiness',$formArray);
+    }
 }
