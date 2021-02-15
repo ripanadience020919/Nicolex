@@ -279,6 +279,8 @@
                                         of Business</a>
                                     <a href="<?php echo base_url(); ?>home/business_type" class="dropdown-item">Business
                                         Type</a>
+                                    <a href="<?php echo base_url(); ?>home/property_type" class="dropdown-item">Property
+                                        Type</a>
                                 </div>
                             </li>
                             <?php

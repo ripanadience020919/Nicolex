@@ -1251,4 +1251,85 @@ class Home extends CI_Controller
 			redirect(base_url() . 'home');
 		}
 	}
+
+	public function property_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'Type Of Property List';
+			$data['rev'] = $this->home_model->property_type_list_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/pro_type_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_property_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			if (!empty($id)) {
+				$data['title'] =  'Edit Type Of Property';
+				$data['rev'] = $this->home_model->specific_property_type($id);
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_pro_type', $data);
+				$this->load->view('admin/inc/footer');
+			} else {
+				$data['title'] =  'Add Type Of Property';
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_pro_type', $data);
+				$this->load->view('admin/inc/footer');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function store_property_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			// echo '<pre>';print_r($_POST);die();
+			if (!empty($_POST['pro_type_id'])) {
+				$data['title'] =  'Update Type Of Property';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['typeofproperty'] = $_POST['pro_type'];
+				$this->home_model->update_property_type($_POST['pro_type_id'], $formArray);
+				$this->session->set_flashdata('success', 'Property Type Updated Successfully.');
+				redirect(base_url() . 'home/property_type');
+			} else {
+				$data['title'] =  'Store Type Of Property';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['typeofproperty'] = $_POST['pro_type'];
+				$this->home_model->inspropertytype($formArray);
+				$this->session->set_flashdata('success', 'Property Type Added Successfully.');
+				redirect(base_url() . 'home/property_type');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function delete_property_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment(3);
+			$delete = $this->db->where('id', $id)->delete('typeofproperty');
+			if ($delete) {
+				$this->session->set_flashdata('success', 'Property Type Deleted Successfully.');
+				redirect(base_url() . 'home/property_type');
+			} else {
+				$this->session->set_flashdata('failure', 'Property Type Already Deleted.');
+				redirect(base_url() . 'home/property_type');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
 }

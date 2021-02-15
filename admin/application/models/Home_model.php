@@ -493,4 +493,28 @@ class Home_model extends CI_Model
     {
         $this->db->where('id', $retid)->update('statewithgovernment',$formArray);
     }
+
+    public function inspropertytype($data)
+    {
+        $this->db->insert('typeofproperty', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function property_type_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('typeofproperty')->result_array();
+        return $data;
+    }
+
+    public function specific_property_type($id)
+    {
+        $data = $this->db->where('id',$id)->get('typeofproperty')->row_array();
+        return $data;
+    }
+
+    public function update_property_type($retid,$formArray)
+    {
+        $this->db->where('id', $retid)->update('typeofproperty',$formArray);
+    }
 }
