@@ -421,4 +421,28 @@ class Home_model extends CI_Model
                 ORDER BY 2 DESC');
         return $query->result_array();
     }
+
+    public function insbustype($data)
+    {
+        $this->db->insert('typeofbusiness', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function bus_type_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('typeofbusiness')->result_array();
+        return $data;
+    }
+
+    public function specific_bus_type($id)
+    {
+        $data = $this->db->where('id',$id)->get('typeofbusiness')->row_array();
+        return $data;
+    }
+
+    public function update_bus_type($retid,$formArray)
+    {
+        $this->db->where('id', $retid)->update('typeofbusiness',$formArray);
+    }
 }

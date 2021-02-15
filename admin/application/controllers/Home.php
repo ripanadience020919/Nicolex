@@ -1159,6 +1159,100 @@ class Home extends CI_Controller {
 		}
 		else
 		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'home');
+		}
+	}
+
+	public function business_type(){
+		if ($this->session->userdata('username') != '')
+		{
+			$data['title'] =  'Type Of Business List';
+			$data['rev'] = $this->home_model->bus_type_list_db();
+			$this->load->view('admin/inc/header',$data);
+			$this->load->view('admin/bus_type_list',$data);
+			$this->load->view('admin/inc/footer');
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'home');
+		}
+	}
+
+	public function add_business_type(){
+		if ($this->session->userdata('username') != '')
+		{
+			$id = $this->uri->segment('3');
+			if (!empty($id)) {
+				$data['title'] =  'Edit Type Of Business';
+				$data['rev'] = $this->home_model->specific_bus_type($id);
+				$this->load->view('admin/inc/header',$data);
+				$this->load->view('admin/add_bus_type',$data);
+				$this->load->view('admin/inc/footer');
+			}else{
+				$data['title'] =  'Add Type Of Business';
+				$data['rev'] = $this->home_model->get_total_LGs_rev();
+				$this->load->view('admin/inc/header',$data);
+				$this->load->view('admin/add_bus_type',$data);
+				$this->load->view('admin/inc/footer');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'home');
+		}
+	}
+
+	public function store_Bus_type(){
+		if ($this->session->userdata('username') != '')
+		{
+			// echo '<pre>';print_r($_POST);die();
+			if (!empty($_POST['bus_type_id'])) {
+				$data['title'] =  'Update Type Of Business';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['typeofbusiness'] = $_POST['bus_type'];
+				$this->home_model->update_bus_type($_POST['bus_type_id'],$formArray);
+				$this->session->set_flashdata('success','Business Type Updated Successfully.');
+				redirect(base_url(). 'home/business_type');
+			} else {
+				$data['title'] =  'Store Type Of Business';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['typeofbusiness'] = $_POST['bus_type'];
+				$this->home_model->insbustype($formArray);
+				$this->session->set_flashdata('success','Business Type Added Successfully.');
+				redirect(base_url(). 'home/business_type');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'home');
+		}
+	}
+
+	public function delete_business_type()
+	{
+		if ($this->session->userdata('username') != '')
+		{
+			$id=$this->uri->segment(3);
+			$delete=$this->db->where('id', $id)->delete('typeofbusiness');
+			if($delete)
+			{
+				$this->session->set_flashdata('success','Business Type Deleted Successfully.');
+				redirect(base_url(). 'home/business_type');
+			}
+			else{
+				$this->session->set_flashdata('failure','Business Type Already Deleted.');
+				redirect(base_url(). 'home/business_type');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
 			redirect(base_url(). 'home');
 		}
 	}

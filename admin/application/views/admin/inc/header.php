@@ -272,14 +272,10 @@
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url();?>home/payment_analysis" class="dropdown-item">State
                                         With Goverment</a>
-                                </div>
-                                <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url();?>home/payment_analysis" class="dropdown-item">Size
                                         of Business</a>
-                                </div>
-                                <div class="dropdown-menu" aria-labelledby="topnav-apps">
-                                    <a href="<?php echo base_url();?>home/payment_analysis"
-                                        class="dropdown-item">Business Types</a>
+                                    <a href="<?php echo base_url();?>home/business_type" class="dropdown-item">Business
+                                        Type</a>
                                 </div>
                             </li>
                             <?php
