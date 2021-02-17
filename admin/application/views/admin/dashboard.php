@@ -132,10 +132,21 @@
                                                     <td colspan="4">
                                                         <?php echo $value['government']?>
                                                     </td>
-    
+                                                    <?php
+                                                            if (!empty($value['trans_amount'])) {
+                                                    ?>
                                                     <td colspan="4">
-                                                        <?php echo $value['trans_amount']?>
+                                                        <?php echo number_format((float)$value['trans_amount'], 2, '.', '');?>
                                                     </td>
+                                                    <?php
+                                                            }else{
+                                                    ?>
+                                                    <td colspan="4">
+                                                        <?php echo number_format((float)0, 2, '.', '');?>
+                                                    </td>
+                                                    <?php
+                                                            }
+                                                    ?>
                                                 </tr>
                                                 <?php
                                                             }
@@ -153,18 +164,15 @@
                                 </div>
                             </div> <!-- end col -->
 
-                            <div class="col-xl-6">
+                            <!-- <div class="col-xl-6">
                                 <div class="card-box">
                                     <div class="dropdown float-right">
                                         <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
                                             <i class="mdi mdi-dots-vertical"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <!-- item-->
                                             <a href="javascript:void(0);" class="dropdown-item">Edit Report</a>
-                                            <!-- item-->
                                             <a href="javascript:void(0);" class="dropdown-item">Export Report</a>
-                                            <!-- item-->
                                             <a href="javascript:void(0);" class="dropdown-item">Action</a>
                                         </div>
                                     </div>
@@ -318,9 +326,9 @@
 
                                             </tbody>
                                         </table>
-                                    </div> <!-- end .table-responsive-->
-                                </div> <!-- end card-box-->
-                            </div> <!-- end col -->
+                                    </div> 
+                                </div> 
+                            </div> -->
                         </div>
                         <!-- end row -->
                         

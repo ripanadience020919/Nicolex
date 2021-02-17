@@ -281,6 +281,7 @@
                                         Type</a>
                                     <a href="<?php echo base_url(); ?>home/property_type" class="dropdown-item">Property
                                         Type</a>
+                                    <a href="<?php echo base_url(); ?>home/vrp_use_type" class="dropdown-item">Use Type Of VRP</a>
                                 </div>
                             </li>
                             <?php

@@ -517,4 +517,28 @@ class Home_model extends CI_Model
     {
         $this->db->where('id', $retid)->update('typeofproperty',$formArray);
     }
+
+    public function insvrpusetype($data)
+    {
+        $this->db->insert('usetypeofvrp', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function vrpuse_type_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('usetypeofvrp')->result_array();
+        return $data;
+    }
+
+    public function specific_vrpuse_type($id)
+    {
+        $data = $this->db->where('id',$id)->get('usetypeofvrp')->row_array();
+        return $data;
+    }
+
+    public function update_vrpuse_type($retid,$formArray)
+    {
+        $this->db->where('id', $retid)->update('usetypeofvrp',$formArray);
+    }
 }

@@ -1332,4 +1332,86 @@ class Home extends CI_Controller
 			redirect(base_url() . 'home');
 		}
 	}
+
+	public function vrp_use_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'Use Type Of Vehicle Radio & Parking List';
+			$data['rev'] = $this->home_model->vrpuse_type_list_db();
+			// echo '<pre>';print_r($data['rev']);die();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/vrp_use_type_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_vrp_use_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			if (!empty($id)) {
+				$data['title'] =  'Edit Use Type Of Vehicle Radio & Parking';
+				$data['rev'] = $this->home_model->specific_vrpuse_type($id);
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_vrp_use_type', $data);
+				$this->load->view('admin/inc/footer');
+			} else {
+				$data['title'] =  'Add Use Type Of Vehicle Radio & Parking';
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_vrp_use_type', $data);
+				$this->load->view('admin/inc/footer');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function store_vrp_use_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			// echo '<pre>';print_r($_POST);die();
+			if (!empty($_POST['use_type_id'])) {
+				$data['title'] =  'Update Use Type Of Vehicle Radio & Parking';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['usetypeofvrp'] = $_POST['use_type'];
+				$this->home_model->update_vrpuse_type($_POST['use_type_id'], $formArray);
+				$this->session->set_flashdata('success', 'Use Type Updated Successfully.');
+				redirect(base_url() . 'home/vrp_use_type');
+			} else {
+				$data['title'] =  'Store Use Type Of Vehicle Radio & Parking';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['usetypeofvrp'] = $_POST['use_type'];
+				$this->home_model->insvrpusetype($formArray);
+				$this->session->set_flashdata('success', 'Use Type Added Successfully.');
+				redirect(base_url() . 'home/vrp_use_type');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function delete_vrp_use_type()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment(3);
+			$delete = $this->db->where('id', $id)->delete('usetypeofvrp');
+			if ($delete) {
+				$this->session->set_flashdata('success', 'Use Type Deleted Successfully.');
+				redirect(base_url() . 'home/vrp_use_type');
+			} else {
+				$this->session->set_flashdata('failure', 'Use Type Already Deleted.');
+				redirect(base_url() . 'home/vrp_use_type');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
 }
