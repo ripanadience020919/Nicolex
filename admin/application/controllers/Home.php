@@ -1414,4 +1414,129 @@ class Home extends CI_Controller
 			redirect(base_url() . 'home');
 		}
 	}
+
+	public function all_admins()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'List Of Admins';
+			$data['rev'] = $this->home_model->all_admins_list_db();
+			// echo '<pre>';print_r($data['rev']);die();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/admin_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_admins()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			if (!empty($id)) {
+				$data['title'] =  'Edit a Admin';
+				$data['rev'] = $this->home_model->specific_admins($id);
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_admin', $data);
+				$this->load->view('admin/inc/footer');
+			} else {
+				$data['title'] =  'Add a Admin';
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/add_admin', $data);
+				$this->load->view('admin/inc/footer');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function store_admin()
+	{
+		if ($this->session->userdata('username') != '') {
+			// echo '<pre>';print_r($_POST);die();
+			if (!empty($_POST['sub_admin_id'])) {
+				$data['title'] =  'Update Admin';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['username'] = $_POST['username'];
+				$formArray['phone'] = $_POST['phone'];
+				$formArray['email'] = $_POST['email'];
+				$formArray['password'] = md5($_POST['password']);
+				$formArray['opassword'] = $_POST['password'];
+				$formArray['state'] = $_POST['state'];
+				$formArray['LG'] = $_POST['LG'];
+				$formArray['role'] = 2;
+				if($_FILES['photo']['name']!='')
+	            {
+	                $this->update_man_profile_img('photo',$_POST['sub_admin_id']);
+	            }
+				$this->home_model->update_admins($_POST['sub_admin_id'], $formArray);
+			        $this->session->set_flashdata('success','Admin updated Successfully.');
+					redirect(base_url() . 'home/all_admins');
+			} else {
+				$data['title'] =  'Store Admin';
+				$formArray = array();
+				$formArray['admin_id'] = $this->session->userdata('id');
+				$formArray['username'] = $_POST['username'];
+				$formArray['phone'] = $_POST['phone'];
+				$formArray['email'] = $_POST['email'];
+				$formArray['password'] = md5($_POST['password']);
+				$formArray['opassword'] = $_POST['password'];
+				$formArray['state'] = $_POST['state'];
+				$formArray['LG'] = $_POST['LG'];
+				$formArray['role'] = 2;
+		        $retid = $this->home_model->insadmins($formArray);
+	            if($_FILES['photo']['name']!='')
+	            {
+	                $this->update_man_profile_img('photo',$retid);
+	            }
+				$this->session->set_flashdata('success', 'Admin Added Successfully.');
+				redirect(base_url() . 'home/all_admins');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function update_man_profile_img($form_field_name, $retid)
+    {
+        $config['upload_path'] = 'assets/admin/uploads/admins';
+        $config['allowed_types'] = '*';
+        $config['encrypt_name']=TRUE;
+            
+        $this->upload->initialize($config);
+        $this->load->library('upload', $config);
+        
+        if ( ! $this->upload->do_upload($form_field_name))
+        {
+            $errors = $this->upload->display_errors();  
+        }
+        else
+        {          
+            $upload_data = $this->upload->data();
+            $file_names =   $upload_data['file_name'];
+            $rs_update=$this->home_model->update_man_imgs($file_names,$retid);  
+        }
+    }
+
+	public function delete_admin()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment(3);
+			$delete = $this->db->where('id', $id)->delete('sub_admins');
+			if ($delete) {
+				$this->session->set_flashdata('success', 'Admin Deleted Successfully.');
+				redirect(base_url() . 'home/all_admins');
+			} else {
+				$this->session->set_flashdata('failure', 'Admin Already Deleted.');
+				redirect(base_url() . 'home/all_admins');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
 }

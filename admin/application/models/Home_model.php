@@ -541,4 +541,33 @@ class Home_model extends CI_Model
     {
         $this->db->where('id', $retid)->update('usetypeofvrp',$formArray);
     }
+
+    public function insadmins($data)
+    {
+        $this->db->insert('sub_admins', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function update_man_imgs($file_names,$retid)
+    {
+        $this->db->set('photo', $file_names)->where('id', $retid)->update('sub_admins');
+    }
+
+    public function all_admins_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('sub_admins')->result_array();
+        return $data;
+    }
+
+    public function specific_admins($id)
+    {
+        $data = $this->db->where('id',$id)->get('sub_admins')->row_array();
+        return $data;
+    }
+
+    public function update_admins($retid,$formArray)
+    {
+        $this->db->where('id', $retid)->update('sub_admins',$formArray);
+    }
 }

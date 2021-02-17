@@ -284,6 +284,18 @@
                                     <a href="<?php echo base_url(); ?>home/vrp_use_type" class="dropdown-item">Use Type Of VRP</a>
                                 </div>
                             </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fe-tag mr-1"></i> Admins <div class="arrow-down"></div>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="topnav-apps">
+                                    <a href="<?php echo base_url(); ?>home/add_admins"
+                                        class="dropdown-item">Add a Admin</a>
+                                    <a href="<?php echo base_url(); ?>home/all_admins"
+                                        class="dropdown-item">All Admin</a>
+                                </div>
+                            </li>
                             <?php
                             }
                             ?>
