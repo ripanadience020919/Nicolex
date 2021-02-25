@@ -23,14 +23,26 @@ class Home extends CI_Controller
 	{
 		if ($this->session->userdata('username') != '') {
 			$data['title'] =  'Dashboard';
-			$data['this_year'] = $this->get_total_years_rev();
-			$data['this_day'] = $this->get_total_days_rev();
-			$data['this_week'] = $this->get_total_weeks_rev();
-			$data['this_month'] = $this->get_total_months_rev();
-			$data['rev'] = $this->home_model->get_total_LGs_rev();
-			$this->load->view('admin/inc/header', $data);
-			$this->load->view('admin/dashboard', $data);
-			$this->load->view('admin/inc/footer');
+			if ($this->session->userdata('role') == 1) {
+				$data['this_year'] = $this->get_total_years_rev();
+				$data['this_day'] = $this->get_total_days_rev();
+				$data['this_week'] = $this->get_total_weeks_rev();
+				$data['this_month'] = $this->get_total_months_rev();
+				$data['rev'] = $this->home_model->get_total_LGs_rev();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/dashboard', $data);
+				$this->load->view('admin/inc/footer');
+			}elseif ($this->session->userdata('role') == 2) {
+				$data['this_year'] = $this->get_total_years_rev_state();
+				$data['this_month'] = $this->get_total_months_rev_state();
+				$data['this_week'] = $this->get_total_weeks_rev_state();
+				$data['this_day'] = $this->get_total_days_rev_state();
+				$data['rev'] = $this->home_model->get_total_LGs_rev_state();
+				// echo '<pre>';print_r($data['rev']);die();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/dashboard', $data);
+				$this->load->view('admin/inc/footer');
+			}
 		} else {
 			redirect(base_url() . 'home');
 		}
@@ -75,10 +87,17 @@ class Home extends CI_Controller
 		if ($this->session->userdata('username') != '') {
 			$data['title'] = 'All Business Exemption';
 			$this->load->model('home_model');
-			$data['hcat'] = $this->home_model->businessexemptions();
-			$this->load->view('admin/inc/header', $data);
-			$this->load->view('admin/businessexemptionslist', $data);
-			$this->load->view('admin/inc/footer');
+			if ($this->session->userdata('role') == 1) {
+				$data['hcat'] = $this->home_model->businessexemptions();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/businessexemptionslist', $data);
+				$this->load->view('admin/inc/footer');
+			}elseif ($this->session->userdata('role') == 2) {
+				$data['hcat'] = $this->home_model->businessexemptions_state();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/businessexemptionslist', $data);
+				$this->load->view('admin/inc/footer');
+			}
 		} else {
 			$this->session->set_flashdata('failure', 'Invalid Username and Password');
 			redirect(base_url() . 'home');
@@ -177,10 +196,17 @@ class Home extends CI_Controller
 		if ($this->session->userdata('username') != '') {
 			$data['title'] = 'All Property Exemption';
 			$this->load->model('home_model');
-			$data['hcat'] = $this->home_model->propertyexemptions();
-			$this->load->view('admin/inc/header', $data);
-			$this->load->view('admin/propertyexemptionslist', $data);
-			$this->load->view('admin/inc/footer');
+			if ($this->session->userdata('role') == 1) {
+				$data['hcat'] = $this->home_model->propertyexemptions();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/propertyexemptionslist', $data);
+				$this->load->view('admin/inc/footer');
+			}elseif ($this->session->userdata('role') == 2) {
+				$data['hcat'] = $this->home_model->propertyexemptions_state();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/propertyexemptionslist', $data);
+				$this->load->view('admin/inc/footer');
+			}
 		} else {
 			$this->session->set_flashdata('failure', 'Invalid Username and Password');
 			redirect(base_url() . 'home');
@@ -279,10 +305,17 @@ class Home extends CI_Controller
 		if ($this->session->userdata('username') != '') {
 			$data['title'] = 'All Vehicle Radio & Parking Exemption';
 			$this->load->model('home_model');
-			$data['hcat'] = $this->home_model->vrpexemptions();
-			$this->load->view('admin/inc/header', $data);
-			$this->load->view('admin/vrpexemptionslist', $data);
-			$this->load->view('admin/inc/footer');
+			if ($this->session->userdata('role') == 1) {
+				$data['hcat'] = $this->home_model->vrpexemptions();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/vrpexemptionslist', $data);
+				$this->load->view('admin/inc/footer');
+			}elseif ($this->session->userdata('role') == 2) {
+				$data['hcat'] = $this->home_model->vrpexemptions_state();
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/vrpexemptionslist', $data);
+				$this->load->view('admin/inc/footer');
+			}
 		} else {
 			$this->session->set_flashdata('failure', 'Invalid Username and Password');
 			redirect(base_url() . 'home');
@@ -858,21 +891,37 @@ class Home extends CI_Controller
 			$today = date("Y-m-d");
 			$month_date = date('Y-m-d', strtotime($today . ' -1 months'));
 			$year_date = date('Y-m-d', strtotime($today . ' -12 months'));
+			if ($this->session->userdata('role') == 1) {
+				$data['today_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db($today, $today);
+				$data['today_business_pa'] = $this->home_model->payment_analysis_business_dtl_db($today, $today);
+				$data['today_property_pa'] = $this->home_model->payment_analysis_property_dtl_db($today, $today);
 
-			$data['today_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db($today, $today);
-			$data['today_business_pa'] = $this->home_model->payment_analysis_business_dtl_db($today, $today);
-			$data['today_property_pa'] = $this->home_model->payment_analysis_property_dtl_db($today, $today);
+				$data['month_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db($month_date, $today);
+				$data['month_business_pa'] = $this->home_model->payment_analysis_business_dtl_db($month_date, $today);
+				$data['month_property_pa'] = $this->home_model->payment_analysis_property_dtl_db($month_date, $today);
 
-			$data['month_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db($month_date, $today);
-			$data['month_business_pa'] = $this->home_model->payment_analysis_business_dtl_db($month_date, $today);
-			$data['month_property_pa'] = $this->home_model->payment_analysis_property_dtl_db($month_date, $today);
+				$data['year_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db($year_date, $today);
+				$data['year_business_pa'] = $this->home_model->payment_analysis_business_dtl_db($year_date, $today);
+				$data['year_property_pa'] = $this->home_model->payment_analysis_property_dtl_db($year_date, $today);
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/payment_analysis', $data);
+				$this->load->view('admin/inc/footer');
+			}elseif ($this->session->userdata('role') == 2) {
+				$data['today_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db_state($today,$today,$this->session->userdata('state'));
+				$data['today_business_pa'] = $this->home_model->payment_analysis_business_dtl_db_state($today, $today,$this->session->userdata('state'));
+				$data['today_property_pa'] = $this->home_model->payment_analysis_property_dtl_db_state($today, $today,$this->session->userdata('state'));
 
-			$data['year_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db($year_date, $today);
-			$data['year_business_pa'] = $this->home_model->payment_analysis_business_dtl_db($year_date, $today);
-			$data['year_property_pa'] = $this->home_model->payment_analysis_property_dtl_db($year_date, $today);
-			$this->load->view('admin/inc/header', $data);
-			$this->load->view('admin/payment_analysis', $data);
-			$this->load->view('admin/inc/footer');
+				$data['month_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db_state($month_date, $today,$this->session->userdata('state'));
+				$data['month_business_pa'] = $this->home_model->payment_analysis_business_dtl_db_state($month_date, $today,$this->session->userdata('state'));
+				$data['month_property_pa'] = $this->home_model->payment_analysis_property_dtl_db_state($month_date, $today,$this->session->userdata('state'));
+
+				$data['year_vehicle_pa'] = $this->home_model->payment_analysis_vehicle_dtl_db_state($year_date, $today,$this->session->userdata('state'));
+				$data['year_business_pa'] = $this->home_model->payment_analysis_business_dtl_db_state($year_date, $today,$this->session->userdata('state'));
+				$data['year_property_pa'] = $this->home_model->payment_analysis_property_dtl_db_state($year_date, $today,$this->session->userdata('state'));
+				$this->load->view('admin/inc/header', $data);
+				$this->load->view('admin/payment_analysis', $data);
+				$this->load->view('admin/inc/footer');
+			}
 		} else {
 			$this->session->set_flashdata('failure', 'Invalid Username and Password');
 			redirect(base_url() . 'home');
@@ -961,6 +1010,16 @@ class Home extends CI_Controller
 		return number_format((float)$total_years_rev, 2, '.', '');
 	}
 
+	public function get_total_years_rev_state()
+	{
+		$current_year = date('Y');
+		$rev_bus = $this->home_model->get_total_years_rev_business_state($current_year);
+		$rev_pro = $this->home_model->get_total_years_rev_property_state($current_year);
+		$rev_vehi = $this->home_model->get_total_years_rev_vehicle_state($current_year);
+		$total_years_rev = ($rev_bus['trans_amount'] + $rev_pro['trans_amount'] + $rev_vehi['trans_amount']);
+		return number_format((float)$total_years_rev, 2, '.', '');
+	}
+
 	public function get_total_months_rev()
 	{
 		$current_year = date('Y');
@@ -968,6 +1027,17 @@ class Home extends CI_Controller
 		$rev_bus = $this->home_model->get_total_months_rev_business($current_year, $current_month);
 		$rev_pro = $this->home_model->get_total_months_rev_property($current_year, $current_month);
 		$rev_vehi = $this->home_model->get_total_months_rev_vehicle($current_year, $current_month);
+		$total_months_rev = ($rev_bus['trans_amount'] + $rev_pro['trans_amount'] + $rev_vehi['trans_amount']);
+		return number_format((float)$total_months_rev, 2, '.', '');
+	}
+
+	public function get_total_months_rev_state()
+	{
+		$current_year = date('Y');
+		$current_month = date('m');
+		$rev_bus = $this->home_model->get_total_months_rev_business_state($current_year, $current_month);
+		$rev_pro = $this->home_model->get_total_months_rev_property_state($current_year, $current_month);
+		$rev_vehi = $this->home_model->get_total_months_rev_vehicle_state($current_year, $current_month);
 		$total_months_rev = ($rev_bus['trans_amount'] + $rev_pro['trans_amount'] + $rev_vehi['trans_amount']);
 		return number_format((float)$total_months_rev, 2, '.', '');
 	}
@@ -982,6 +1052,16 @@ class Home extends CI_Controller
 		return number_format((float)$total_days_rev, 2, '.', '');
 	}
 
+	public function get_total_days_rev_state()
+	{
+		$current_day = date('Y-m-d');
+		$rev_bus = $this->home_model->get_total_days_rev_business_state($current_day);
+		$rev_pro = $this->home_model->get_total_days_rev_property_state($current_day);
+		$rev_vehi = $this->home_model->get_total_days_rev_vehicle_state($current_day);
+		$total_days_rev = ($rev_bus['trans_amount'] + $rev_pro['trans_amount'] + $rev_vehi['trans_amount']);
+		return number_format((float)$total_days_rev, 2, '.', '');
+	}
+
 	public function get_total_weeks_rev()
 	{
 		$week_start = date("Y-m-d", strtotime("-7 days"));
@@ -989,6 +1069,17 @@ class Home extends CI_Controller
 		$rev_bus = $this->home_model->get_total_weeks_rev_business($week_start, $week_end);
 		$rev_pro = $this->home_model->get_total_weeks_rev_property($week_start, $week_end);
 		$rev_vehi = $this->home_model->get_total_weeks_rev_vehicle($week_start, $week_end);
+		$total_days_rev = ($rev_bus['trans_amount'] + $rev_pro['trans_amount'] + $rev_vehi['trans_amount']);
+		return number_format((float)$total_days_rev, 2, '.', '');
+	}
+
+	public function get_total_weeks_rev_state()
+	{
+		$week_start = date("Y-m-d", strtotime("-7 days"));
+		$week_end = date("Y-m-d", strtotime("-0 days"));
+		$rev_bus = $this->home_model->get_total_weeks_rev_business_state($week_start, $week_end);
+		$rev_pro = $this->home_model->get_total_weeks_rev_property_state($week_start, $week_end);
+		$rev_vehi = $this->home_model->get_total_weeks_rev_vehicle_state($week_start, $week_end);
 		$total_days_rev = ($rev_bus['trans_amount'] + $rev_pro['trans_amount'] + $rev_vehi['trans_amount']);
 		return number_format((float)$total_days_rev, 2, '.', '');
 	}
@@ -1466,7 +1557,7 @@ class Home extends CI_Controller
 				$formArray['password'] = md5($_POST['password']);
 				$formArray['opassword'] = $_POST['password'];
 				$formArray['state'] = $_POST['state'];
-				$formArray['LG'] = $_POST['LG'];
+				$formArray['LG'] = implode(',',$_POST['LG']);
 				$formArray['role'] = 2;
 				if($_FILES['photo']['name']!='')
 	            {
@@ -1485,7 +1576,7 @@ class Home extends CI_Controller
 				$formArray['password'] = md5($_POST['password']);
 				$formArray['opassword'] = $_POST['password'];
 				$formArray['state'] = $_POST['state'];
-				$formArray['LG'] = $_POST['LG'];
+				$formArray['LG'] = implode(',',$_POST['LG']);
 				$formArray['role'] = 2;
 		        $retid = $this->home_model->insadmins($formArray);
 	            if($_FILES['photo']['name']!='')
@@ -1522,6 +1613,42 @@ class Home extends CI_Controller
         }
     }
 
+    public function block_admins($id)
+    {
+    	if ($this->session->userdata('username') != '') {
+			$uid = $id;
+			$delete = $this->db->set('status',0)->where('id', $uid)->update('sub_admins');
+			if ($delete) {
+				$this->session->set_flashdata('success', 'Admin Blocked Successfully.');
+				redirect(base_url() . 'home/all_admins');
+			} else {
+				$this->session->set_flashdata('failure', 'Admin Already Deleted.');
+				redirect(base_url() . 'home/all_admins');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+    }
+
+    public function unblock_admins($id)
+    {
+    	if ($this->session->userdata('username') != '') {
+			$uid = $id;
+			$delete = $this->db->set('status',1)->where('id',$id)->update('sub_admins');
+			if ($delete) {
+				$this->session->set_flashdata('success', 'Admin UnBlocked Successfully.');
+				redirect(base_url() . 'home/all_admins');
+			} else {
+				$this->session->set_flashdata('failure', 'Admin Already Deleted.');
+				redirect(base_url() . 'home/all_admins');
+			}
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+    }
+
 	public function delete_admin()
 	{
 		if ($this->session->userdata('username') != '') {
@@ -1539,4 +1666,616 @@ class Home extends CI_Controller
 			redirect(base_url() . 'home');
 		}
 	}
+
+	public function business_rate()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'Business Rate List';
+			$data['list'] = $this->home_model->business_rate_list_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/business_rate_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_business_rate()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			$data['title'] =  'Add Business Rate';
+			$data['list'] = $this->home_model->src_business_rate_by_id($id);
+
+			// echo "<pre>";print_r($data['list']);die;
+			$data['busi'] = $this->home_model->src_business_name_db();
+			$data['size'] = $this->home_model->src_business_size_db();
+			$data['state'] = $this->home_model->src_state_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/add_business_rate', $data);
+			$this->load->view('admin/inc/footer');
+		} 
+		else 
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_business_rate_csv()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			$data['title'] =  'Upload Business Rate CSV';
+			// $data['list'] = $this->home_model->src_business_rate_by_id($id);
+			// $data['busi'] = $this->home_model->src_business_name_db();
+			// $data['size'] = $this->home_model->src_business_size_db();
+			// $data['state'] = $this->home_model->src_state_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/add_business_rate_csv', $data);
+			$this->load->view('admin/inc/footer');
+		} 
+		else 
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function get_govt_edit()
+	{
+		// echo "<pre>";print_r($_POST);die;
+		// $states = get_perticular_field_value('statewithgovernment','government'," and `state`='".$val['state']."'");
+        $id = $_POST['sub_admin_id'];
+        $state = $_POST['state'];
+	    $list=$this->db->where('id', $_POST['sub_admin_id'])->get('sub_admins')->row();
+	    if(!empty($state))
+	    {
+	        $check=$this->db->where('state', $_POST['state'])->get('statewithgovernment')->result_array();
+			// echo "<pre>";print_r($check);die;
+			if(!empty($check))
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    		foreach ($check as $value) 
+	    		{
+	    			$c = "";
+	    			if(!empty($list))
+	    			{
+		    			if ($value['government'] == $list->LG)
+		                {
+		                    $c = "selected";
+		                }
+		    		}
+	    			echo '<option value="'.$value['government'].'" '.$c.'>'.$value['government'].'</option>';
+	    		}
+	    	}
+	    	else
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    	}
+	    }
+	    else
+	    {
+	    	echo '<option value="">Select a Government</option>';
+	    }
+	}
+
+	public function get_govt()
+	{
+		// echo "<pre>";print_r($_POST);die;
+        $id = $_POST['id'];
+        $state = $_POST['state'];
+	    $list=$this->db->where('id', $_POST['id'])->get('businessrate')->row();
+	    if(!empty($state))
+	    {
+	        $check=$this->db->where('state', $_POST['state'])->get('statewithgovernment')->result_array();
+			// echo "<pre>";print_r($check);die;
+			if(!empty($check))
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    		foreach ($check as $value) 
+	    		{
+	    			$c = "";
+	    			if(!empty($list))
+	    			{
+		    			if ($value['government'] == $list->government)
+		                {
+		                    $c = "selected";
+		                }
+		    		}
+	    			echo '<option value="'.$value['government'].'" '.$c.'>'.$value['government'].'</option>';
+	    		}
+	    	}
+	    	else
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    	}
+	    }
+	    else
+	    {
+	    	echo '<option value="">Select a Government</option>';
+	    }
+	}
+
+	public function get_govt1()
+	{
+		// echo "<pre>";print_r($_POST);die;
+        $id = $_POST['id'];
+        $state = $_POST['state'];
+	    $list=$this->db->where('id', $_POST['id'])->get('propertyrate')->row();
+	    if(!empty($state))
+	    {
+	        $check=$this->db->where('state', $_POST['state'])->get('statewithgovernment')->result_array();
+			// echo "<pre>";print_r($check);die;
+			if(!empty($check))
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    		foreach ($check as $value) 
+	    		{
+	    			$c = "";
+	    			if(!empty($list))
+	    			{
+		    			if ($value['government'] == $list->government)
+		                {
+		                    $c = "selected";
+		                }
+		    		}
+	    			echo '<option value="'.$value['government'].'" '.$c.'>'.$value['government'].'</option>';
+	    		}
+	    	}
+	    	else
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    	}
+	    }
+	    else
+	    {
+	    	echo '<option value="">Select a Government</option>';
+	    }
+	}
+
+	public function get_govt2()
+	{
+		// echo "<pre>";print_r($_POST);die;
+        $id = $_POST['id'];
+        $state = $_POST['state'];
+	    $list=$this->db->where('id', $_POST['id'])->get('vehiclerate')->row();
+	    if(!empty($state))
+	    {
+	        $check=$this->db->where('state', $_POST['state'])->get('statewithgovernment')->result_array();
+			// echo "<pre>";print_r($check);die;
+			if(!empty($check))
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    		foreach ($check as $value) 
+	    		{
+	    			$c = "";
+	    			if(!empty($list))
+	    			{
+		    			if ($value['government'] == $list->government)
+		                {
+		                    $c = "selected";
+		                }
+		    		}
+	    			echo '<option value="'.$value['government'].'" '.$c.'>'.$value['government'].'</option>';
+	    		}
+	    	}
+	    	else
+	    	{
+	    		echo '<option value="">Select a Government</option>';
+	    	}
+	    }
+	    else
+	    {
+	    	echo '<option value="">Select a Government</option>';
+	    }
+	}
+
+	public function add_business_rate_data()
+	{
+
+		// echo "<pre>";print_r($_POST);die;
+		if ($this->session->userdata('username') != '')
+		{
+			$this->load->model('home_model');
+			$formArray = array();
+			$formArray['bid'] = $_POST['bid'];
+			$formArray['category'] = $_POST['category'];
+			$formArray['bidenticationfee'] = $_POST['bidenticationfee'];
+			$formArray['hselevy'] = $_POST['hselevy'];
+			$formArray['professionallevy'] = $_POST['professionallevy'];
+			$formArray['refusedisposal'] = $_POST['refusedisposal'];
+			$formArray['billboard'] = $_POST['billboard'];
+			$formArray['fire'] = $_POST['fire'];
+			$formArray['privateenterprise'] = $_POST['privateenterprise'];
+			$formArray['evssanitation'] = $_POST['evssanitation'];
+
+			$total=$_POST['bidenticationfee']+$_POST['hselevy']+$_POST['professionallevy']+$_POST['refusedisposal']+$_POST['billboard']+$_POST['fire']+$_POST['privateenterprise']+$_POST['evssanitation'];
+			$formArray['total'] = $total;
+
+			$formArray['state'] = $_POST['state'];
+			$formArray['government'] = $_POST['goverment'];
+
+			if($this->home_model->insbusrate($formArray))
+	    	{
+		        $this->session->set_flashdata('success','Business Rate Added Successfully.');
+				redirect(base_url(). 'home/business_rate');
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Business Rate Already Exist.');
+				redirect(base_url(). 'home/business_rate');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+	}
+
+	public function edit_business_rate_data()
+	{
+		// echo "<pre>";print_r($_POST);die;
+		if ($this->session->userdata('username') != '')
+		{
+			$this->load->model('home_model');
+			$formArray = array();
+			$id=$_POST['id'];
+			$formArray['bid'] = $_POST['bid'];
+			$formArray['category'] = $_POST['category'];
+			$formArray['bidenticationfee'] = $_POST['bidenticationfee'];
+			$formArray['hselevy'] = $_POST['hselevy'];
+			$formArray['professionallevy'] = $_POST['professionallevy'];
+			$formArray['refusedisposal'] = $_POST['refusedisposal'];
+			$formArray['billboard'] = $_POST['billboard'];
+			$formArray['fire'] = $_POST['fire'];
+			$formArray['privateenterprise'] = $_POST['privateenterprise'];
+			$formArray['evssanitation'] = $_POST['evssanitation'];
+
+			$total=$_POST['bidenticationfee']+$_POST['hselevy']+$_POST['professionallevy']+$_POST['refusedisposal']+$_POST['billboard']+$_POST['fire']+$_POST['privateenterprise']+$_POST['evssanitation'];
+			$formArray['total'] = $total;
+
+			$formArray['state'] = $_POST['state'];
+			$formArray['government'] = $_POST['goverment'];
+
+			if($this->home_model->updbusrate($formArray, $id))
+	    	{
+		        $this->session->set_flashdata('success','Business Rate Updated Successfully.');
+				redirect(base_url(). 'home/business_rate');
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Business Rate Already Exist.');
+				redirect(base_url(). 'home/business_rate');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+	}
+
+	public function delete_business_rate($id)
+    {
+    	if ($this->session->userdata('username') != '')
+		{
+			 $this->load->model('home_model');
+             $this->home_model->deletebusrate($id);
+             $this->session->set_flashdata('success','Business Rate Deleted Successfully.');
+             redirect('home/business_rate');
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+    }
+
+    public function property_rate()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'Property Rate List';
+			$data['list'] = $this->home_model->property_rate_list_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/property_rate_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_property_rate_csv()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			$data['title'] =  'Upload Business Rate CSV';
+			// $data['list'] = $this->home_model->src_business_rate_by_id($id);
+			// $data['busi'] = $this->home_model->src_business_name_db();
+			// $data['size'] = $this->home_model->src_business_size_db();
+			// $data['state'] = $this->home_model->src_state_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/add_property_rate_csv', $data);
+			$this->load->view('admin/inc/footer');
+		} 
+		else 
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_property_rate()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			$data['title'] =  'Add Property Rate';
+			$data['list'] = $this->home_model->src_property_rate_by_id($id);
+
+			// echo "<pre>";print_r($data['list']);die;
+			// $data['busi'] = $this->home_model->src_business_name_db();
+			$data['type'] = $this->home_model->src_property_type_db();
+			$data['state'] = $this->home_model->src_state_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/add_property_rate', $data);
+			$this->load->view('admin/inc/footer');
+		} 
+		else 
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_property_rate_data()
+	{
+
+		// echo "<pre>";print_r($_POST);die;
+		if ($this->session->userdata('username') != '')
+		{
+			$this->load->model('home_model');
+			$formArray = array();
+			$formArray['type'] = $_POST['type'];
+			$formArray['identification'] = $_POST['identification'];
+			$formArray['landuse'] = $_POST['landuse'];
+			$formArray['wastesystem'] = $_POST['wastesystem'];
+			$formArray['radiationfee'] = $_POST['radiationfee'];
+			$formArray['infrastructre'] = $_POST['infrastructre'];
+			$formArray['polution'] = $_POST['polution'];
+
+			$total=$_POST['identification']+$_POST['landuse']+$_POST['wastesystem']+$_POST['radiationfee']+$_POST['infrastructre']+$_POST['polution'];
+			$formArray['total'] = $total;
+
+			$formArray['state'] = $_POST['state'];
+			$formArray['government'] = $_POST['goverment'];
+
+			if($this->home_model->insprorate($formArray))
+	    	{
+		        $this->session->set_flashdata('success','Property Rate Added Successfully.');
+				redirect(base_url(). 'home/property_rate');
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Property Rate Already Exist.');
+				redirect(base_url(). 'home/property_rate');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+	}
+
+	public function delete_property_rate($id)
+    {
+    	if ($this->session->userdata('username') != '')
+		{
+			 $this->load->model('home_model');
+             $this->home_model->deleteprorate($id);
+             $this->session->set_flashdata('success','Property Rate Deleted Successfully.');
+             redirect('home/property_rate');
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+    }
+
+    public function edit_property_rate_data()
+	{
+		// echo "<pre>";print_r($_POST);die;
+		if ($this->session->userdata('username') != '')
+		{
+			$this->load->model('home_model');
+			$formArray = array();
+			$id=$_POST['id'];
+			$formArray['type'] = $_POST['type'];
+			$formArray['identification'] = $_POST['identification'];
+			$formArray['landuse'] = $_POST['landuse'];
+			$formArray['wastesystem'] = $_POST['wastesystem'];
+			$formArray['radiationfee'] = $_POST['radiationfee'];
+			$formArray['infrastructre'] = $_POST['infrastructre'];
+			$formArray['polution'] = $_POST['polution'];
+
+			$total=$_POST['identification']+$_POST['landuse']+$_POST['wastesystem']+$_POST['radiationfee']+$_POST['infrastructre']+$_POST['polution'];
+			$formArray['total'] = $total;
+
+			$formArray['state'] = $_POST['state'];
+			$formArray['government'] = $_POST['goverment'];
+
+			if($this->home_model->updprorate($formArray, $id))
+	    	{
+		        $this->session->set_flashdata('success','Property Rate Updated Successfully.');
+				redirect(base_url(). 'home/property_rate');
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Property Rate Already Exist.');
+				redirect(base_url(). 'home/property_rate');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+	}
+
+	public function vehicle_rate()
+	{
+		if ($this->session->userdata('username') != '') {
+			$data['title'] =  'Vehicle Rate List';
+			$data['list'] = $this->home_model->vehicle_rate_list_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/vehicle_rate_list', $data);
+			$this->load->view('admin/inc/footer');
+		} else {
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_vehicle_rate_csv()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			$data['title'] =  'Upload Vehicle Rate CSV';
+			// $data['list'] = $this->home_model->src_business_rate_by_id($id);
+			// $data['busi'] = $this->home_model->src_business_name_db();
+			// $data['size'] = $this->home_model->src_business_size_db();
+			// $data['state'] = $this->home_model->src_state_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/add_vehicle_rate_csv', $data);
+			$this->load->view('admin/inc/footer');
+		} 
+		else 
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_vehicle_rate()
+	{
+		if ($this->session->userdata('username') != '') {
+			$id = $this->uri->segment('3');
+			$data['title'] =  'Add Property Rate';
+			$data['list'] = $this->home_model->src_vehicle_rate_by_id($id);
+
+			// echo "<pre>";print_r($data['list']);die;
+			// $data['busi'] = $this->home_model->src_business_name_db();
+			$data['type'] = $this->home_model->src_vehicle_type_db();
+			$data['state'] = $this->home_model->src_state_db();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/add_vehicle_rate', $data);
+			$this->load->view('admin/inc/footer');
+		} 
+		else 
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url() . 'home');
+		}
+	}
+
+	public function add_vehicle_rate_data()
+	{
+
+		// echo "<pre>";print_r($_POST);die;
+		if ($this->session->userdata('username') != '')
+		{
+			$this->load->model('home_model');
+			$formArray = array();
+			$formArray['type'] = $_POST['type'];
+			$formArray['rate'] = $_POST['rate'];
+			$formArray['state'] = $_POST['state'];
+			$formArray['government'] = $_POST['goverment'];
+
+			if($this->home_model->insvclrate($formArray))
+	    	{
+		        $this->session->set_flashdata('success','Vehicle Rate Added Successfully.');
+				redirect(base_url(). 'home/vehicle_rate');
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Vehicle Rate Already Exist.');
+				redirect(base_url(). 'home/vehicle_rate');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+	}
+
+	public function edit_vehicle_rate_data()
+	{
+		// echo "<pre>";print_r($_POST);die;
+		if ($this->session->userdata('username') != '')
+		{
+			$this->load->model('home_model');
+			$formArray = array();
+			$id=$_POST['id'];
+			$formArray['type'] = $_POST['type'];
+			$formArray['rate'] = $_POST['rate'];
+			$formArray['state'] = $_POST['state'];
+			$formArray['government'] = $_POST['goverment'];
+
+			if($this->home_model->updvclrate($formArray, $id))
+	    	{
+		        $this->session->set_flashdata('success','Vehicle Rate Updated Successfully.');
+				redirect(base_url(). 'home/vehicle_rate');
+			}
+			else
+			{
+				$this->session->set_flashdata('failure','Vehicle Rate Already Exist.');
+				redirect(base_url(). 'home/vehicle_rate');
+			}
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+	}
+
+	public function delete_vehicle_rate($id)
+    {
+    	if ($this->session->userdata('username') != '')
+		{
+			 $this->load->model('home_model');
+             $this->home_model->deletevclrate($id);
+             $this->session->set_flashdata('success','Vehicle Rate Deleted Successfully.');
+             redirect('home/vehicle_rate');
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+    }
+
+    public function rev_history()
+    {
+    	if ($this->session->userdata('username') != '')
+		{
+			$gov = str_replace("%20"," ",$this->uri->segment('3'));
+	        $data['title'] =  'Local Goverment Revenue History';
+			$data['rev_his'] = $this->home_model->get_total_LGs_rev_history($gov);
+			// echo '<pre>';print_r($data['rev_his']);die();
+			$this->load->view('admin/inc/header', $data);
+			$this->load->view('admin/lg_rev_his', $data);
+			$this->load->view('admin/inc/footer');
+		}
+		else
+		{
+			$this->session->set_flashdata('failure', 'Invalid Username and Password');
+			redirect(base_url(). 'Admin');
+		}
+    }
 }

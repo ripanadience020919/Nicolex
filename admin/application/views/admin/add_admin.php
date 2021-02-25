@@ -44,7 +44,7 @@
                     <?php
                             if (!empty($rev)) {
                     ?>
-                    <form action="<?php echo base_url();?>home/store_admin" method="post"
+                    <form id="queikform1" action="<?php echo base_url();?>home/store_admin" method="post"
                         enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-lg-12">
@@ -88,7 +88,8 @@
                                             <div class="col-md-6">
                                                 <label for="product-name">Select State<span
                                                         class="text-danger">*</span></label>
-                                                <select class="form-control" id="example-select" name="state">
+                                                <select class="form-control" id="example-select" onchange="getGOVT_edit();" name="state">
+                                                <option value="0">Select a State</option>
                                                 <?php
                                                     $state = getStates();
                                                     foreach ($state as $value) {
@@ -103,15 +104,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="product-name">Select Government<span class="text-danger">*</span></label>
-                                                <select class="form-control" id="example-select" name="LG">
-                                                <?php
-                                                    $state = getGovernments();
-                                                    foreach ($state as $value) {
-                                                ?>
-                                                <option value="<?php echo $value; ?>" <?php if ($rev['LG'] == $value) {echo "selected";} ?>><?php echo $value;?></option>
-                                                <?php
-                                                }
-                                                ?>
+                                                <select class="form-control govermentt" id="example-select" name="LG[]" multiple>
+                                                <option value="0">Select a Government</option>
+                                                
                                                 </select>
                                             </div>
                                         </div>
@@ -142,7 +137,7 @@
                     <?php
                             }else{
                     ?>
-                    <form action="<?php echo base_url();?>home/store_admin" method="post"
+                    <form id="queikform" action="<?php echo base_url();?>home/store_admin" method="post"
                         enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-lg-12">
@@ -184,7 +179,8 @@
                                             <div class="col-md-6">
                                                 <label for="product-name">Select State<span
                                                         class="text-danger">*</span></label>
-                                                <select class="form-control" id="example-select" name="state">
+                                                <select class="form-control" id="example-select" onchange="getGOVT();" name="state">
+                                                <option value="0">Select a State</option>
                                                 <?php
                                                     $state = getStates();
                                                     foreach ($state as $value) {
@@ -197,15 +193,9 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="product-name">Select Government<span class="text-danger">*</span></label>
-                                                <select class="form-control" id="example-select" name="LG">
-                                                <?php
-                                                    $state = getGovernments();
-                                                    foreach ($state as $value) {
-                                                ?>
-                                                <option value="<?php echo $value;?>"><?php echo $value;?></option>
-                                                <?php
-                                                }
-                                                ?>
+                                                <select class="form-control goverment" id="example-select" name="LG[]" multiple>
+                                                <option value="0">Select a Government</option>
+                                                
                                                 </select>
                                             </div>
                                         </div>
@@ -263,3 +253,71 @@
                     </div>
                 </div> <!-- container -->
             </div> <!-- content -->
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script type="text/javascript">
+                setTimeout(function(){
+                  getGOVT_edit();
+                }, 1000);
+            </script>
+            <script type="text/javascript">
+                function getGOVT(e)
+                { 
+                    // alert('test');
+                    event.preventDefault();
+                    //attvalue
+                    var form1 = $('#queikform')[0];
+                    // alert(form1);
+                    var data = new FormData(form1);
+                    var url2="<?php echo base_url(); ?>home/get_govt";
+                    $.ajax({
+                      type: "POST",
+                      enctype: 'multipart/form-data',
+                      url: url2,
+                      data: data,
+                      processData: false,
+                      contentType: false,
+                      cache: false,
+                      timeout: 600000,
+                      success: function (data) {
+                        // alert(data);
+                        $('.goverment').html(data);
+                        //ajaxindicatorstop();
+                      },
+                      error: function (e) {
+                        alert("ERROR : ", e);
+                        //ajaxindicatorstop();
+                        }
+                    }); 
+                }
+
+                function getGOVT_edit(e)
+                { 
+                    // alert('test');
+                    // event.preventDefault();
+                    //attvalue
+                    var form1 = $('#queikform1')[0];
+                    // alert(form1);
+                    var data = new FormData(form1);
+                    var url2="<?php echo base_url(); ?>home/get_govt_edit";
+                    $.ajax({
+                      type: "POST",
+                      enctype: 'multipart/form-data',
+                      url: url2,
+                      data: data,
+                      processData: false,
+                      contentType: false,
+                      cache: false,
+                      timeout: 600000,
+                      success: function (data) {
+                        // alert(data);
+                        $('.govermentt').html(data);
+                        //ajaxindicatorstop();
+                      },
+                      error: function (e) {
+                        alert("ERROR : ", e);
+                        //ajaxindicatorstop();
+                        }
+                    }); 
+                }
+            </script>

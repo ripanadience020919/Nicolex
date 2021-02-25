@@ -21,15 +21,33 @@ class Home_model extends CI_Model
         return $data;
     }
 
+    public function businessexemptions_state()
+    {
+        $data = $this->db->where('state',$this->session->userdata('state'))->get('business_exemptions')->result_array();
+        return $data;
+    }
+
     public function propertyexemptions()
     {
         $data = $this->db->get('property_exemption')->result_array();
         return $data;
     }
 
+    public function propertyexemptions_state()
+    {
+        $data = $this->db->where('state',$this->session->userdata('state'))->get('property_exemption')->result_array();
+        return $data;
+    }
+
     public function vrpexemptions()
     {
         $data = $this->db->get('vehicle_exemption')->result_array();
+        return $data;
+    }
+
+    public function vrpexemptions_state()
+    {
+        $data = $this->db->where('state',$this->session->userdata('state'))->get('vehicle_exemption')->result_array();
         return $data;
     }
 
@@ -172,6 +190,19 @@ class Home_model extends CI_Model
             return $query->row();;
         }
     }
+
+    public function payment_analysis_vehicle_dtl_db_state($start_data,$end_date,$state){
+        $query = $this->db->query("SELECT IFNULL(SUM(`amount`),'0') as 'amount',
+            'Vehicle' as 'name_trn'
+            FROM `vehicle_bill` 
+            WHERE DATE_FORMAT(`createat`,'%Y-%m-%d') BETWEEN '$start_data' AND '$end_date' AND `state`='".$state."'
+        ");
+        if($query->num_rows()>0){
+            // return $query->result();
+            return $query->row();;
+        }
+    }
+
     public function payment_analysis_business_dtl_db($start_data,$end_date){
         $query = $this->db->query("SELECT IFNULL(SUM(`amount`),'0') as 'amount',
             'Vehicle' as 'name_trn'
@@ -183,11 +214,36 @@ class Home_model extends CI_Model
             return $query->row();;
         }
     }
+
+    public function payment_analysis_business_dtl_db_state($start_data,$end_date,$state){
+        $query = $this->db->query("SELECT IFNULL(SUM(`amount`),'0') as 'amount',
+            'Vehicle' as 'name_trn'
+            FROM `business_bill` 
+            WHERE DATE_FORMAT(`createat`,'%Y-%m-%d') BETWEEN '$start_data' AND '$end_date'  AND `state`=`state`='".$state."'
+        ");
+        if($query->num_rows()>0){
+            // return $query->result();
+            return $query->row();;
+        }
+    }
+
     public function payment_analysis_property_dtl_db($start_data,$end_date){
         $query = $this->db->query("SELECT IFNULL(SUM(`amount`),'0') as 'amount',
             'Vehicle' as 'name_trn'
             FROM `property_bill` 
             WHERE DATE_FORMAT(`createat`,'%Y-%m-%d') BETWEEN '$start_data' AND '$end_date'
+        ");
+        if($query->num_rows()>0){
+            // return $query->result();
+            return $query->row();;
+        }
+    }
+
+    public function payment_analysis_property_dtl_db_state($start_data,$end_date,$state){
+        $query = $this->db->query("SELECT IFNULL(SUM(`amount`),'0') as 'amount',
+            'Vehicle' as 'name_trn'
+            FROM `property_bill` 
+            WHERE DATE_FORMAT(`createat`,'%Y-%m-%d') BETWEEN '$start_data' AND '$end_date' AND `state`=`state`='".$state."'
         ");
         if($query->num_rows()>0){
             // return $query->result();
@@ -326,6 +382,15 @@ class Home_model extends CI_Model
         return $user = $this->db->get()->row_array();
     }
 
+    public function get_total_years_rev_business_state($curr_year){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('business')
+        ->where('YEAR(paymentdate)',$curr_year)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
+        return $user = $this->db->get()->row_array();
+    }
+
     public function get_total_months_rev_business($curr_year,$curr_month){
         $this->db->select_sum('trans_amount','trans_amount')
         ->from('business')
@@ -334,10 +399,29 @@ class Home_model extends CI_Model
         return $user = $this->db->get()->row_array();
     }
 
+    public function get_total_months_rev_business_state($curr_year,$curr_month){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('business')
+        ->where('YEAR(paymentdate)',$curr_year)
+        ->where('MONTH(paymentdate)',$curr_month)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
+        return $user = $this->db->get()->row_array();
+    }
+
     public function get_total_days_rev_business($curr_day){
         $this->db->select_sum('trans_amount','trans_amount')
         ->from('business')
         ->where('paymentdate',$curr_day);
+        return $user = $this->db->get()->row_array();
+    }
+
+    public function get_total_days_rev_business_state($curr_day){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('business')
+        ->where('paymentdate',$curr_day)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
         return $user = $this->db->get()->row_array();
     }
 
@@ -349,10 +433,29 @@ class Home_model extends CI_Model
         return $user = $this->db->get()->row_array();
     }
 
+    public function get_total_weeks_rev_business_state($week_start,$week_end){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('business')
+        ->where('paymentdate >=',$week_start)
+        ->where('paymentdate <',$week_end)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
+        return $user = $this->db->get()->row_array();
+    }
+
     public function get_total_years_rev_property($curr_year){
         $this->db->select_sum('trans_amount','trans_amount')
         ->from('property')
         ->where('YEAR(paymentdate)',$curr_year);
+        return $user = $this->db->get()->row_array();
+    }
+
+    public function get_total_years_rev_property_state($curr_year){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('property')
+        ->where('YEAR(paymentdate)',$curr_year)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
         return $user = $this->db->get()->row_array();
     }
 
@@ -364,10 +467,29 @@ class Home_model extends CI_Model
         return $user = $this->db->get()->row_array();
     }
 
+    public function get_total_months_rev_property_state($curr_year,$curr_month){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('property')
+        ->where('YEAR(paymentdate)',$curr_year)
+        ->where('MONTH(paymentdate)',$curr_month)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
+        return $user = $this->db->get()->row_array();
+    }
+
     public function get_total_days_rev_property($curr_day){
         $this->db->select_sum('trans_amount','trans_amount')
         ->from('property')
         ->where('paymentdate',$curr_day);
+        return $user = $this->db->get()->row_array();
+    }
+
+    public function get_total_days_rev_property_state($curr_day){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('property')
+        ->where('paymentdate',$curr_day)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
         return $user = $this->db->get()->row_array();
     }
 
@@ -379,10 +501,29 @@ class Home_model extends CI_Model
         return $user = $this->db->get()->row_array();
     }
 
+    public function get_total_weeks_rev_property_state($week_start,$week_end){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('property')
+        ->where('paymentdate >=',$week_start)
+        ->where('paymentdate <',$week_end)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
+        return $user = $this->db->get()->row_array();
+    }
+
     public function get_total_years_rev_vehicle($curr_year){
         $this->db->select_sum('trans_amount','trans_amount')
         ->from('vehicle')
         ->where('YEAR(paymentdate)',$curr_year);
+        return $user = $this->db->get()->row_array();
+    }
+
+    public function get_total_years_rev_vehicle_state($curr_year){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('vehicle')
+        ->where('YEAR(paymentdate)',$curr_year)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
         return $user = $this->db->get()->row_array();
     }
 
@@ -394,10 +535,29 @@ class Home_model extends CI_Model
         return $user = $this->db->get()->row_array();
     }
 
+    public function get_total_months_rev_vehicle_state($curr_year,$curr_month){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('vehicle')
+        ->where('YEAR(paymentdate)',$curr_year)
+        ->where('MONTH(paymentdate)',$curr_month)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
+        return $user = $this->db->get()->row_array();
+    }
+
     public function get_total_days_rev_vehicle($curr_day){
         $this->db->select_sum('trans_amount','trans_amount')
         ->from('vehicle')
         ->where('paymentdate',$curr_day);
+        return $user = $this->db->get()->row_array();
+    }
+
+    public function get_total_days_rev_vehicle_state($curr_day){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('vehicle')
+        ->where('paymentdate',$curr_day)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
         return $user = $this->db->get()->row_array();
     }
 
@@ -406,6 +566,16 @@ class Home_model extends CI_Model
         ->from('vehicle')
         ->where('paymentdate >=',$week_start)
         ->where('paymentdate <',$week_end);
+        return $user = $this->db->get()->row_array();
+    }
+
+    public function get_total_weeks_rev_vehicle_state($week_start,$week_end){
+        $this->db->select_sum('trans_amount','trans_amount')
+        ->from('vehicle')
+        ->where('paymentdate >=',$week_start)
+        ->where('paymentdate <',$week_end)
+        ->where('state',$this->session->userdata('state'))
+        ->where_in('government', explode(',',$this->session->userdata('LG')));
         return $user = $this->db->get()->row_array();
     }
 
@@ -418,6 +588,34 @@ class Home_model extends CI_Model
                 UNION 
                 SELECT `government`,`trans_amount` FROM `vehicle`) alt
                 GROUP BY alt.government
+                ORDER BY 2 DESC');
+        return $query->result_array();
+    }
+
+    public function get_total_LGs_rev_state(){
+        $query = $this->db->query('SELECT alt.government,
+                SUM(alt.trans_amount) as trans_amount
+                FROM (SELECT `government`,`trans_amount`,`state` FROM `business`
+                UNION
+                SELECT `government`,`trans_amount`,`state` FROM `property`
+                UNION 
+                SELECT `government`,`trans_amount`,`state` FROM `vehicle`) alt
+                WHERE alt.state = "'.$this->session->userdata('state').'" AND
+                alt.government IN ("'.$this->session->userdata('LG').'")
+                GROUP BY alt.government
+                ORDER BY 2 DESC');
+        return $query->result_array();
+    }
+
+    public function get_total_LGs_rev_history($gov){
+        $query = $this->db->query('SELECT alt.government,
+                alt.trans_amount,alt.state,alt.paymentdate
+                FROM (SELECT `government`,`trans_amount`,`state`,`paymentdate` FROM `business`
+                      UNION
+                      SELECT `government`,`trans_amount`,`state`,`paymentdate` FROM `property`
+                      UNION 
+                      SELECT `government`,`trans_amount`,`state`,`paymentdate` FROM `vehicle`) alt
+                WHERE alt.government = "'.$gov.'"
                 ORDER BY 2 DESC');
         return $query->result_array();
     }
@@ -569,5 +767,122 @@ class Home_model extends CI_Model
     public function update_admins($retid,$formArray)
     {
         $this->db->where('id', $retid)->update('sub_admins',$formArray);
+    }
+
+    public function business_rate_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('businessrate')->result_array();
+        return $data;
+    }
+
+    public function src_business_name_db()
+    {
+        $data = $this->db->get('business')->result_array();
+        return $data;
+    }
+
+    public function src_business_size_db()
+    {
+        $data = $this->db->get('sizeofbusiness')->result_array();
+        return $data;
+    }
+
+    public function src_state_db()
+    {
+        $data = $this->db->group_by('state')->get('statewithgovernment')->result_array();
+        return $data;
+    }
+
+    public function insbusrate($data)
+    {
+        $this->db->insert('businessrate', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function deletebusrate($retid)
+    {
+        $this->db->where('id', $retid)->delete('businessrate');
+    }
+
+    public function src_business_rate_by_id($retid)
+    {
+        return $this->db->where('id', $retid)->get('businessrate')->row();
+    }
+
+    public function updbusrate($formArray, $id)
+    {
+        $this->db->where('id', $id)->update('businessrate',$formArray);
+        return true;
+    }
+
+    public function property_rate_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('propertyrate')->result_array();
+        return $data;
+    }
+
+    public function src_property_type_db()
+    {
+        $data = $this->db->get('typeofproperty')->result_array();
+        return $data;
+    }
+
+    public function insprorate($data)
+    {
+        $this->db->insert('propertyrate', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function deleteprorate($retid)
+    {
+        $this->db->where('id', $retid)->delete('propertyrate');
+    }
+
+    public function src_property_rate_by_id($retid)
+    {
+        return $this->db->where('id', $retid)->get('propertyrate')->row();
+    }
+
+    public function updprorate($formArray, $id)
+    {
+        $this->db->where('id', $id)->update('propertyrate',$formArray);
+        return true;
+    }
+
+    public function vehicle_rate_list_db()
+    {
+        $data = $this->db->order_by('id','DESC')->get('vehiclerate')->result_array();
+        return $data;
+    }
+
+    public function src_vehicle_type_db()
+    {
+        $data = $this->db->get('usetypeofvrp')->result_array();
+        return $data;
+    }
+
+    public function insvclrate($data)
+    {
+        $this->db->insert('vehiclerate', $data);
+        $id = $this->db->insert_id();
+        return $id;
+    }
+
+    public function src_vehicle_rate_by_id($retid)
+    {
+        return $this->db->where('id', $retid)->get('vehiclerate')->row();
+    }
+
+    public function updvclrate($formArray, $id)
+    {
+        $this->db->where('id', $id)->update('vehiclerate',$formArray);
+        return true;
+    }
+
+    public function deletevclrate($retid)
+    {
+        $this->db->where('id', $retid)->delete('vehiclerate');
     }
 }

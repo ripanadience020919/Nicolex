@@ -82,7 +82,7 @@
                                     </p>
                                 </div>
 
-                                <form action="<?php echo base_url();?>home/adminlogin" method="post">
+                                <form action="<?php echo base_url();?>subadmin/subadminlogin" method="post">
 
                                     <div class="form-group mb-3">
                                         <!-- <label for="emailaddress">Email address</label> -->
@@ -138,7 +138,7 @@
 
                         <div class="row mt-3">
                             <div class="col-12 text-center">
-                                <p> <a href="<?php echo base_url();?>subadmin" class="text-white-50 ml-1"><b>Login As SubAdmin</b></a></p>
+                                <p> <a href="<?php echo base_url();?>" class="text-white-50 ml-1"><b>Login As Admin</b></a></p>
                                 <!-- <p class="text-white-50">Don't have an account? <a href="auth-register.html" class="text-white ml-1"><b>Sign Up</b></a></p> -->
                             </div>
                         </div>

@@ -49,6 +49,7 @@
                                                     <th>Rank</th>
                                                     <th>Government</th>
                                                     <th>Revenue (NGN)</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -78,6 +79,12 @@
                                                     <?php
                                                         }
                                                     ?>
+                                                    <td>
+                                                        <a href="<?php  echo base_url().'home/rev_history/'.$val['government']?>"><button type="button"
+                                                        class="btn btn-primary btn-sm waves-effect waves-light"
+                                                        >Revenue History</button>
+                                                        </a>
+                                                    </td>
                                                 </tr>
                                                 <?php 
                                                         }

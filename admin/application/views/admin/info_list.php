@@ -50,7 +50,7 @@
                                                 <tr>
                                                     <th>Sl No.</th>
                                                     <th>Title</th>
-                                                    <!-- <th>Answer</th> -->
+                                                    <th>Description</th>
                                                     <th>Status</th>
                                                     <th>Actions</th>
                                                 </tr>
@@ -65,9 +65,9 @@
                                                     <td>
                                                         <?php echo $val['title'];?>
                                                     </td>
-                                                    <!-- <td>
-                                                        <?php echo $val['answer'];?>
-                                                    </td> -->
+                                                    <td>
+                                                        <?php echo $val['description'];?>
+                                                    </td>
                                                     <td>
                                                         <?php if($val['status']=='A') { echo "<b style=color:green;>Active</b>"; }else{ echo "<b style=color:orange;>Pending</b>";}?>
                                                     </td>

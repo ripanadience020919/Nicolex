@@ -46,6 +46,7 @@
                                                     <th>Sl No.</th>
                                                     <th>Profile Photo</th>
                                                     <th>Username</th>
+                                                    <th>Password</th>
                                                     <th>Phone</th>
                                                     <th>Email</th>
                                                     <th>State</th>
@@ -67,6 +68,9 @@
                                                         <?php echo $val['username']; ?>
                                                     </td>
                                                     <td>
+                                                        <?php echo $val['opassword']; ?>
+                                                    </td>
+                                                    <td>
                                                         <?php echo $val['phone']; ?>
                                                     </td>
                                                     <td>
@@ -79,6 +83,27 @@
                                                         <?php echo $val['LG']; ?>
                                                     </td>
                                                     <td>
+                                                        <?php
+                                                            if ($val['status'] == 1) {
+                                                        ?>
+                                                        <a
+                                                            href="<?= base_url() . 'home/block_admins/' . $val['id']; ?>"><button
+                                                                type="button"
+                                                                class="btn btn-secondary btn-sm waves-effect waves-light"><i
+                                                                    class="mdi mdi-account-lock"></i>
+                                                                Block</button></a>
+                                                        <?php
+                                                            }else{
+                                                        ?>
+                                                        <a
+                                                            href="<?= base_url() . 'home/unblock_admins/' .$val['id']; ?>"><button
+                                                                type="button"
+                                                                class="btn btn-success btn-sm waves-effect waves-light"><i
+                                                                    class="mdi mdi-account-key"></i>
+                                                                UnBlock</button></a>
+                                                        <?php
+                                                            }
+                                                        ?>
                                                         <a
                                                             href="<?= base_url() . 'home/add_admins/' . $val['id']; ?>"><button
                                                                 type="button"

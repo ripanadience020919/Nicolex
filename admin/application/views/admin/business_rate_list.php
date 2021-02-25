@@ -36,10 +36,10 @@
                                             }
                                             ?>
                                         </h4>
-                                        <a href="<?php  echo base_url();?>home/add_property_rate"><button type="button"
+                                        <a href="<?php  echo base_url();?>home/add_business_rate"><button type="button"
                                                 class="btn btn-primary btn-sm waves-effect waves-light"
                                                 style="float: right;"><i class="fe-plus mr-1"></i> ADD</button></a>
-                                        <a href="<?php  echo base_url();?>home/add_property_rate_csv"><button type="button"
+                                        <a href="<?php  echo base_url();?>home/add_business_rate_csv"><button type="button"
                                                 class="btn btn-success btn-sm waves-effect waves-light"
                                                 style="float: right;"><i class="fe-plus mr-1"></i> UPLOAD CSV</button></a>
                                         <table id="datatable-buttons"
@@ -47,16 +47,18 @@
                                             <thead>
                                                 <tr>
                                                     <th>Sl No.</th>
-                                                    <th>Type</th>
-                                                    <th>Identification</th>
-                                                    <th>Landuse</th>
-                                                    <th>Wastesystem</th>
-                                                    <th>Radiationfee</th>
-                                                    <th>Infrastructre</th>
-                                                    <th>Polution</th>
-                                                    <th>total</th>
-                                                    <th>state</th>
-                                                    <th>government</th>
+                                                    <th>Category</th>
+                                                    <th>bidenticationfee (NGN)</th>
+                                                    <th>hselevy (NGN)</th>
+                                                    <th>professionallevy (NGN)</th>
+                                                    <th>refusedisposal (NGN)</th>
+                                                    <th>billboard (NGN)</th>
+                                                    <th>fire (NGN)</th>
+                                                    <th>privateenterprise (NGN)</th>
+                                                    <th>evssanitation (NGN)</th>
+                                                    <th>total (NGN)</th>
+                                                    <th>State</th>
+                                                    <th>Government</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -68,25 +70,31 @@
                                                 <tr>
                                                     <td><?php echo $key + 1; ?></td>
                                                     <td>
-                                                        <?php echo $val['type']; ?>
+                                                        <?php echo $val['category'];?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $val['identification']; ?>
+                                                        <?php echo $val['bidenticationfee']; ?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $val['landuse']; ?>
+                                                        <?php echo $val['hselevy']; ?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $val['wastesystem']; ?>
+                                                        <?php echo $val['professionallevy']; ?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $val['radiationfee']; ?>
+                                                        <?php echo $val['refusedisposal']; ?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $val['infrastructre']; ?>
+                                                        <?php echo $val['billboard']; ?>
                                                     </td>
                                                     <td>
-                                                        <?php echo $val['polution']; ?>
+                                                        <?php echo $val['fire']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $val['privateenterprise']; ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo $val['evssanitation']; ?>
                                                     </td>
                                                     <td>
                                                         <?php echo $val['total']; ?>
@@ -99,14 +107,14 @@
                                                     </td>
                                                     <td>
                                                         <a
-                                                            href="<?= base_url() . 'home/edit_property_rate/' . $val['id']; ?>"><button
+                                                            href="<?= base_url() . 'home/edit_business_rate/' . $val['id']; ?>"><button
                                                                 type="button"
                                                                 class="btn btn-warning btn-sm waves-effect waves-light"><i
                                                                     class="mdi mdi-square-edit-outline"></i>
                                                                 Edit</button></a>
 
                                                         <a
-                                                            href="<?= base_url() . 'home/delete_property_rate/' . $val['id']; ?>"><button
+                                                            href="<?= base_url() . 'home/delete_business_rate/' . $val['id']; ?>"><button
                                                                 type="button"
                                                                 class="btn btn-danger btn-sm waves-effect waves-light"><i
                                                                     class="mdi mdi-delete"></i> Delete</button></a>
@@ -118,7 +126,6 @@
                                                 ?>
                                             </tbody>
                                         </table>
-
                                     </div> <!-- end card body-->
                                 </div> <!-- end card -->
                             </div><!-- end col-->

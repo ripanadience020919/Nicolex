@@ -46,7 +46,24 @@
 
     <!-- icons -->
     <link href="<?php echo base_url(); ?>assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-
+    <style>
+        .navbar-custom {
+    background-color: #3283f6;
+    /*box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);*/
+    /*padding: 0 10px 0 0;*/
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*height: 70px;*/
+    /*z-index: 1001;*/
+}
+.navbar-custom .topnav-menu .nav-link {
+    color: #fff;
+}
+.topnav .navbar-nav .nav-link i {
+    color: #3283f6;
+}
+    </style>
 </head>
 
 <body class="loading" data-layout-mode="horizontal"
@@ -120,21 +137,13 @@
                             <?php
                             } elseif ($this->session->userdata('role') == 2) {
                             ?>
-                            <a href="<?php echo base_url(); ?>manager/logout" class="dropdown-item notify-item">
+                            <a href="<?php echo base_url(); ?>subadmin/logout" class="dropdown-item notify-item">
                                 <i class="fe-log-out"></i>
                                 <span>Logout</span>
                             </a>
                             <?php
-                            } else {
+                            } 
                             ?>
-                            <a href="<?php echo base_url(); ?>deliveryboy/logout" class="dropdown-item notify-item">
-                                <i class="fe-log-out"></i>
-                                <span>Logout</span>
-                            </a>
-                            <?php
-                            }
-                            ?>
-
                         </div>
                     </li>
 
@@ -200,13 +209,11 @@
                                     <i class="fe-airplay mr-1"></i> Dashboard
                                 </a>
                             </li>
-                            <?php
-                            if ($this->session->userdata('role') == 1) {
-                            ?>
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Exemptions <div class="arrow-down"></div>
+                                    <i class="fe-heart mr-1"></i> Exemptions <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url(); ?>home/businessexemptionslist"
@@ -223,7 +230,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Others <div class="arrow-down"></div>
+                                    <i class="fe-more-horizontal- mr-1"></i> Others <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url(); ?>home/faq_list" class="dropdown-item"> FaQ </a>
@@ -235,7 +242,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Users <div class="arrow-down"></div>
+                                    <i class="fe-user-check mr-1"></i> Users <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url(); ?>home/user_add" class="dropdown-item"> User Add
@@ -249,7 +256,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Support Requests <div class="arrow-down"></div>
+                                    <i class="fe-check-circle mr-1"></i> Support Requests <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url(); ?>home/query_list" class="dropdown-item"> Query List
@@ -259,7 +266,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Payments <div class="arrow-down"></div>
+                                    <i class="fe-dollar-sign mr-1"></i> Payments <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url(); ?>home/payment_analysis"
@@ -269,7 +276,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Master
+                                    <i class="fe-lock mr-1"></i> Master
                                     Entry <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
@@ -282,12 +289,18 @@
                                     <a href="<?php echo base_url(); ?>home/property_type" class="dropdown-item">Property
                                         Type</a>
                                     <a href="<?php echo base_url(); ?>home/vrp_use_type" class="dropdown-item">Use Type Of VRP</a>
+                                    <a href="<?php echo base_url(); ?>home/business_rate" class="dropdown-item">Business Rate</a>
+                                    <a href="<?php echo base_url(); ?>home/property_rate" class="dropdown-item">Property Rate</a>
+                                    <a href="<?php echo base_url(); ?>home/vehicle_rate" class="dropdown-item">Vehicle Rate</a>
                                 </div>
                             </li>
+                            <?php
+                            if ($this->session->userdata('role') == 1) {
+                            ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fe-tag mr-1"></i> Admins <div class="arrow-down"></div>
+                                    <i class="fe-shield mr-1"></i> Admins <div class="arrow-down"></div>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="topnav-apps">
                                     <a href="<?php echo base_url(); ?>home/add_admins"
